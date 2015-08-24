@@ -1,0 +1,42 @@
+<?php
+
+/*
+ * Implements hook_rules_action_info
+ */
+
+function quiz_rules_xtra_rules_action_info() {
+	$return = array(
+		'quiz_rules_xtra_set_n_random_questions' => array(
+			'label' => t('Set a quiz\'s number of random questions to pull from the pool.'),
+			'group' => t('Quiz Rules Xtra') 
+			'parameter' => array(
+				'quiz_node' => array(
+					'type' => 'integer',
+					'label' => t('The node id associated with the quiz.'),
+				),
+				'n_rand_ques' => array(
+					'type' => 'integer',
+					'label' => t('The number of random questions to pull from the pool'),
+					'default_value' => 0,
+				),
+			), 
+			'base' => 'base_quiz_rules_xtra_set_n_random_questions', 
+		),
+		'quiz_rules_xtra_set_pass_rate' => array(
+			'label' => t('Set a quiz\'s pass rate'),
+			'group' => t('Quiz Rules Xtra') 
+			'parameter' => array(
+				'quiz_node' => array(
+					'type' => 'integer',
+					'label' => t('The node id associated with the quiz.'),
+				),
+				'pass_rate' => array(
+					'type' => 'integer',
+					'label' => t('The pass rate to set the quiz to'),
+					'default_value' => 0,
+				),
+			), 
+			'base' => 'base_quiz_rules_extra_set_pass_rate', 
+		),
+	);
+}
