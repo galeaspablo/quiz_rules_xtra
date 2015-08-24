@@ -1,0 +1,7 @@
+name = Quiz Rules Xtra
+description = Provides Rules actions to edit quiz properties in https://www.drupal.org/project/quiz version 7.x-5.x. This module was written because the use of Entity API in quiz is not complete yet.
+core=7.x
+package = Quiz Addon
+version = "7.x-1-alpha"
+dependencies[] = rules
+dependencies[] = quiz(>=7.5) 
