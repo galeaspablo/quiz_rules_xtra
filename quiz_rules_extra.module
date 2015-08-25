@@ -2,41 +2,379 @@
 
 /*
  * Implements hook_rules_action_info
+ * Actions which use parameters to set values in a quiz.
+ * If a parameter provided is not valid (e.g. 12 in an integer field with three options), nothing will happen. 
  */
 
 function quiz_rules_xtra_rules_action_info() {
-	$return = array(
-		'quiz_rules_xtra_set_n_random_questions' => array(
-			'label' => t('Set a quiz\'s number of random questions to pull from the pool.'),
-			'group' => t('Quiz Rules Xtra') 
-			'parameter' => array(
-				'quiz_node' => array(
-					'type' => 'integer',
-					'label' => t('The node id associated with the quiz.'),
-				),
-				'n_rand_ques' => array(
-					'type' => 'integer',
-					'label' => t('The number of random questions to pull from the pool'),
-					'default_value' => 0,
-				),
-			), 
-			'base' => 'base_quiz_rules_xtra_set_n_random_questions', 
-		),
-		'quiz_rules_xtra_set_pass_rate' => array(
-			'label' => t('Set a quiz\'s pass rate'),
-			'group' => t('Quiz Rules Xtra') 
-			'parameter' => array(
-				'quiz_node' => array(
-					'type' => 'integer',
-					'label' => t('The node id associated with the quiz.'),
-				),
-				'pass_rate' => array(
-					'type' => 'integer',
-					'label' => t('The pass rate to set the quiz to'),
-					'default_value' => 0,
-				),
-			), 
-			'base' => 'base_quiz_rules_extra_set_pass_rate', 
-		),
+	$group_default = t('Quiz Rules Xtra');
+	$nid_parameter_default = array(
+		'type' => 'integer',
+		'label' => t('The node id associated with the quiz.'),
+		);
+	$actions['quiz_rules_xtra_number_of_random_questions'] = array(
+		'label' => t('Set a quiz\'s number of random questions to pull from the pool.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'number_of_random_questions' => array(
+				'type' => 'integer',
+				'label' => t('The number of random questions to pull from the pool.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_number_of_random_questions', 
 	);
+	$actions['quiz_rules_xtra_mascore_for_random'] = array(
+		'label' => t('Set a quiz\'s maximum score per random question.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'max_score_for_random' => array(
+				'type' => 'integer',
+				'label' => t('The maximum score per random question.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_mascore_for_random', 
+	);
+	$actions['quiz_rules_xtra_pass_rate'] = array(
+		'label' => t('Set a quiz\'s passing rate out of 100.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'pass_rate' => array(
+				'type' => 'integer',
+				'label' => t('The passing rate out of 100.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_pass_rate', 
+	);
+	$actions['quiz_rules_xtra_randomization'] = array(
+		'label' => t('Set a quiz\'s enumerated field indicating if this quiz has random questions. 0=none, 1=random order, 2=random questions, 3=random taxonomy.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'randomization' => array(
+				'type' => 'integer',
+				'label' => t('The enumerated field indicating if this quiz has random questions. 0=none, 1=random order, 2=random questions, 3=random taxonomy.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_randomization', 
+	);
+	$actions['quiz_rules_xtra_backwards_navigation'] = array(
+		'label' => t('Set a quiz\'s boolean indicating whether a quiz taker can navigate backwards.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'backwards_navigation' => array(
+				'type' => 'integer',
+				'label' => t('The boolean indicating whether a quiz taker can navigate backwards. 0 = FALSE, 1 = TRUE.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_backwards_navigation', 
+	);
+	$actions['quiz_rules_xtra_keep_results'] = array(
+		'label' => t('Set a quiz\'s enumerated field indicating if this quiz should prune old results. 0=only keep best, 1=only keep newest, 2=keep all.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'keep_results' => array(
+				'type' => 'integer',
+				'label' => t('The enumerated field indicating if this quiz should prune old results. 0=only keep best, 1=only keep newest, 2=keep all.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_keep_results', 
+	);
+	$actions['quiz_rules_xtra_repeat_until_correct'] = array(
+		'label' => t('Set a quiz\'s boolean indicating whether a quiz taker must repeat the question until selecting the correct answer. 0 = FALSE, 1 = TRUE.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'repeat_until_correct' => array(
+				'type' => 'integer',
+				'label' => t('The boolean indicating whether a quiz taker must repeat the question until selecting the correct answer. 0 = FALSE, 1 = TRUE.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_repeat_until_correct', 
+	);
+	$actions['quiz_rules_xtra_quiz_open'] = array(
+		'label' => t('Set a quiz\'s Unix timestamp when the quiz will open.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'quiz_open' => array(
+				'type' => 'integer',
+				'label' => t('The Unix timestamp when the quiz will open.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_quiz_open', 
+	);
+	$actions['quiz_rules_xtra_quiz_close'] = array(
+		'label' => t('Set a quiz\'s Unix timestamp when the quiz will close.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'quiz_close' => array(
+				'type' => 'integer',
+				'label' => t('The Unix timestamp when the quiz will close.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_quiz_close', 
+	);
+	$actions['quiz_rules_xtra_takes'] = array(
+		'label' => t('Limit the number of times this quiz can be taken by a learner. 0 for unlimited.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'takes' => array(
+				'type' => 'integer',
+				'label' => t('Limit the number of times this quiz can be taken by a learner. 0 for unlimited.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_takes', 
+	);
+	$actions['quiz_rules_xtra_show_attempt_stats'] = array(
+		'label' => t('Set a quiz\'s boolean indicating whether or not to show the allowed attempts on the quiz node. 0 = FALSE, 1 = TRUE.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'show_attempt_stats' => array(
+				'type' => 'integer',
+				'label' => t('Set a quiz\'s boolean indicating whether or not to show the allowed attempts on the quiz node. 0 = FALSE, 1 = TRUE.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_show_attempt_stats', 
+	);
+	$actions['quiz_rules_xtra_time_limit'] = array(
+		'label' => t('Set the number of seconds for a user to complete a quiz attempt.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'time_limit' => array(
+				'type' => 'integer',
+				'label' => t('Set the number of seconds for a user to complete a quiz attempt.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_time_limit', 
+	);
+	$actions['quiz_rules_xtra_quiz_always'] = array(
+		'label' => t('Set a boolean indicating whether the quiz will ignore the quiz\'s open and close dates. 0 = FALSE, 1 = TRUE.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'quiz_always' => array(
+				'type' => 'integer',
+				'label' => t('Set a boolean indicating whether the quiz will ignore the quiz\'s open and close dates. 0 = FALSE, 1 = TRUE.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_quiz_always', 
+	);
+	$actions['quiz_rules_xtra_has_userpoints'] = array(
+		'label' => t('Set a quiz\'s boolean indicating whether the Quiz should award user points. 0 = FALSE, 1 = TRUE.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'has_userpoints' => array(
+				'type' => 'integer',
+				'label' => t('Boolean indicating whether the Quiz should award user points. 0 = FALSE, 1 = TRUE.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_has_userpoints', 
+	);
+	$actions['quiz_rules_xtra_userpoints_tid'] = array(
+		'label' => t('Set a quiz\'s taxonomy ID used for userpoints integration.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'userpoints_tid' => array(
+				'type' => 'integer',
+				'label' => t('Taxonomy ID used for userpoints integration.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_userpoints_tid', 
+	);
+	$actions['quiz_rules_xtra_max_score'] = array(
+		'label' => t('Set the max score of this Quiz.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'max_score' => array(
+				'type' => 'integer',
+				'label' => t('The max score of this Quiz.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_max_score', 
+	);
+	$actions['quiz_rules_xtra_allow_skipping'] = array(
+		'label' => t('Set the boolean indicating whether the user can skip a question. 0 = FALSE, 1 = TRUE.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'allow_skipping' => array(
+				'type' => 'integer',
+				'label' => t('Boolean indicating whether the user can skip a question. 0 = FALSE, 1 = TRUE.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_allow_skipping', 
+	);
+	$actions['quiz_rules_xtra_allow_resume'] = array(
+		'label' => t('Set the boolean indicating whether a user can resume a Quiz after logging out and in. 0 = FALSE, 1 = TRUE.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'allow_resume' => array(
+				'type' => 'integer',
+				'label' => t('Boolean indicating whether a user can resume a Quiz after logging out and in. 0 = FALSE, 1 = TRUE.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_allow_resume', 
+	);
+	$actions['quiz_rules_xtra_allow_jumping'] = array(
+		'label' => t('Set the boolean indicating whether a user can skip to any question. 0 = FALSE, 1 = TRUE.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'allow_jumping' => array(
+				'type' => 'integer',
+				'label' => t('Boolean indicating whether a user can skip to any question. 0 = FALSE, 1 = TRUE.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_allow_jumping', 
+	);
+	$actions['quiz_rules_xtra_allow_change'] = array(
+		'label' => t('Set the boolean indicating whether a user can change the answer to an already answered question. 0 = FALSE, 1 = TRUE.'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'allow_change' => array(
+				'type' => 'integer',
+				'label' => t('Boolean indicating whether a user can change the answer to an already answered question. 0 = FALSE, 1 = TRUE.'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_allow_change', 
+	);
+	$actions['quiz_rules_xtra_build_on_last'] = array(
+		'label' => t('CHANGEME'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'build_on_last' => array(
+				'type' => 'integer',
+				'label' => t('CHANGEME'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_build_on_last', 
+	);
+	$actions['quiz_rules_xtra_CHANGEME'] = array(
+		'label' => t('CHANGEME'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'CHANGEME' => array(
+				'type' => 'integer',
+				'label' => t('CHANGEME'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_CHANGEME', 
+	);
+	$actions['quiz_rules_xtra_CHANGEME'] = array(
+		'label' => t('CHANGEME'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'CHANGEME' => array(
+				'type' => 'integer',
+				'label' => t('CHANGEME'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_CHANGEME', 
+	);
+	$actions['quiz_rules_xtra_CHANGEME'] = array(
+		'label' => t('CHANGEME'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'CHANGEME' => array(
+				'type' => 'integer',
+				'label' => t('CHANGEME'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_CHANGEME', 
+	);
+	$actions['quiz_rules_xtra_CHANGEME'] = array(
+		'label' => t('CHANGEME'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'CHANGEME' => array(
+				'type' => 'integer',
+				'label' => t('CHANGEME'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_CHANGEME', 
+	);
+	$actions['quiz_rules_xtra_CHANGEME'] = array(
+		'label' => t('CHANGEME'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'CHANGEME' => array(
+				'type' => 'integer',
+				'label' => t('CHANGEME'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_CHANGEME', 
+	);
+	$actions['quiz_rules_xtra_CHANGEME'] = array(
+		'label' => t('CHANGEME'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'CHANGEME' => array(
+				'type' => 'integer',
+				'label' => t('CHANGEME'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_CHANGEME', 
+	);
+	$actions['quiz_rules_xtra_CHANGEME'] = array(
+		'label' => t('CHANGEME'),
+		'group' =>  $group_default,
+		'parameter' => array(
+			'quiz_node_id' => $nid_parameter_default,
+			'CHANGEME' => array(
+				'type' => 'integer',
+				'label' => t('CHANGEME'),
+				'default_value' => 0,
+			),
+		), 
+		'base' => 'quiz_rules_xtra_CHANGEME', 
+	);
+
 }
