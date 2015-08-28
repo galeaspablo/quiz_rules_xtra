@@ -51,7 +51,7 @@ function quiz_rules_xtra_rules_action_info() {
 		'base' => 'quiz_rules_xtra_pass_rate', 
 	);
 	$actions['quiz_rules_xtra_randomization'] = array(
-		'label' => t('Set a quiz\'s enumerated field indicating if this quiz has random questions. 0=none, 1=random order, 2=random questions, 3=random taxonomy.'),
+		'label' => t('Set a quiz\'s enumerated field indicating if this quiz has random questions.'),
 		'group' =>  $group_default,
 		'parameter' => array(
 			'quiz_node_id' => $nid_parameter_default,
@@ -76,7 +76,7 @@ function quiz_rules_xtra_rules_action_info() {
 		'base' => 'quiz_rules_xtra_backwards_navigation', 
 	);
 	$actions['quiz_rules_xtra_keep_results'] = array(
-		'label' => t('Set a quiz\'s enumerated field indicating if this quiz should prune old results. 0=only keep best, 1=only keep newest, 2=keep all.'),
+		'label' => t('Set a quiz\'s enumerated field indicating if this quiz should prune old results.'),
 		'group' =>  $group_default,
 		'parameter' => array(
 			'quiz_node_id' => $nid_parameter_default,
@@ -261,7 +261,7 @@ function quiz_rules_xtra_rules_action_info() {
 		'base' => 'quiz_rules_xtra_allow_change', 
 	);
 	$actions['quiz_rules_xtra_build_on_last'] = array(
-		'label' => t('Set the enumerated field indicating whether a user can build on the last attempt. "" for none, "correct" for correct answers only, "all" for all answers.'),
+		'label' => t('Set the enumerated field indicating whether a user can build on the last attempt.'),
 		'group' =>  $group_default,
 		'parameter' => array(
 			'quiz_node_id' => $nid_parameter_default,
@@ -305,6 +305,7 @@ function quiz_rules_xtra_rules_action_info() {
 		), 
 		'base' => 'quiz_rules_xtra_unset_review_options', 
 	);
+	return $actions;
 }
 
 /*
