@@ -4,4 +4,4 @@ core=7.x
 package = Quiz Addon
 version = "7.x-1-alpha"
 dependencies[] = rules
-dependencies[] = quiz(>=7.5) 
+dependencies[] = quiz(7.x-5.x) 
