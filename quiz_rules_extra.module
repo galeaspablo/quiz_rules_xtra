@@ -298,7 +298,7 @@ function quiz_rules_xtra_rules_action_info() {
 		'base' => 'quiz_rules_xtra_mark_doubtful', 
 	);
 	$actions['quiz_rules_xtra_unset_review_options'] = array(
-		'label' => t('Unset a quiz\'s review options. I.e. turn them all off. Not working yet.'),
+		'label' => t('Unset a quiz\'s review options. I.e. turn them all off.'),
 		'group' =>  $group_default,
 		'parameter' => array(
 			'quiz_node_id' => $nid_parameter_default,
@@ -321,6 +321,27 @@ function rulesBool2QuizBool(&$string){
 	//quiz stores booleans as int 0 or 1
 	return intval($string);
 }
+function quizReviewOnOff($quiz_node_id, $onOff){
+	$result = db_query('SELECT review_options FROM {quiz_node_properties} WHERE nid = :nid LIMIT 1', array(':nid' => $quiz_node_id));
+	$result = $result->fetchAssoc();
+	$serialized = $result;
+	$unserialized = unserialize($serialized);
+	foreach($unserialized as $keyOfPart => $part){
+		foreach($part as $keyOfElement => $element){
+			//set a review option as ON with its own name
+			if($onOff){
+				$unserialized[$keyOfPart][$keyOfElement]=$keyelement;
+			}
+			//set a review option as OFF with the integer 0
+			else{
+				$unserialized[$keyOfPart][$keyOfElement]=0;
+			}	
+		}
+	}
+	$serializedAgain=serialize($unserialized);
+	updateQuizProperty($quiz_node_id, "review_options", $serializedAgain)
+}
+
 
 /*
  * Callback functions. These are mildly validated, but you are encouraged to do your own validation.
@@ -448,8 +469,8 @@ function quiz_rules_xtra_mark_doubtful($quiz_node_id, $mark_doubtful){
 	updateQuizProperty($quiz_node_id, $property_name, $mark_doubtful);
 }
 function quiz_rules_xtra_unset_review_options($quiz_node_id){
-	$property_name = 'review_options';
-	//$unset_review_options = '';
-	//updateQuizProperty($quiz_node_id, $property_name, $unset_review_options);
+	//Other functions could work to edit more than one quiz attached to a node.
+	//This function would not because it depends on a quiz's initial values.
+	//This doesn't currently matter, nor will it matter as long as there's one quiz per node.
+	quizReviewOnOff($quiz_node_id, FALSE);
 }
-
