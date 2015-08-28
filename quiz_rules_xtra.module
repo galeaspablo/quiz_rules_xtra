@@ -298,7 +298,7 @@ function quiz_rules_xtra_rules_action_info() {
 		'base' => 'quiz_rules_xtra_mark_doubtful', 
 	);
 	$actions['quiz_rules_xtra_unset_review_options'] = array(
-		'label' => t('Unset a quiz\'s review options. I.e. turn them all off.'),
+		'label' => t('Unset a quiz\'s review options. I.e. turn them all off. Not working yet.'),
 		'group' =>  $group_default,
 		'parameter' => array(
 			'quiz_node_id' => $nid_parameter_default,
@@ -339,9 +339,8 @@ function quizReviewOnOff($quiz_node_id, $onOff){
 		}
 	}
 	$serializedAgain=serialize($unserialized);
-	updateQuizProperty($quiz_node_id, "review_options", $serializedAgain)
+	updateQuizProperty($quiz_node_id, "review_options", $serializedAgain);
 }
-
 
 /*
  * Callback functions. These are mildly validated, but you are encouraged to do your own validation.
@@ -349,11 +348,11 @@ function quizReviewOnOff($quiz_node_id, $onOff){
  */
 function quiz_rules_xtra_number_of_random_questions($quiz_node_id, $number_of_random_questions){
 	$property_name = 'number_of_random_questions';
-	updateQuizProperty($quiz_node_id, $property_name, $number_of_random_questions)
+	updateQuizProperty($quiz_node_id, $property_name, $number_of_random_questions);
 }
 function quiz_rules_xtra_maxscore_for_random($quiz_node_id, $maxscore_for_random){
 	$property_name = 'maxscore_for_random';
-	updateQuizProperty($quiz_node_id, $property_name, $maxscore_for_random)
+	updateQuizProperty($quiz_node_id, $property_name, $maxscore_for_random);
 }
 function quiz_rules_xtra_pass_rate($quiz_node_id, $pass_rate){
 	//check that the argument is between 0 & 100 to avoid unexpected behavior
@@ -469,8 +468,6 @@ function quiz_rules_xtra_mark_doubtful($quiz_node_id, $mark_doubtful){
 	updateQuizProperty($quiz_node_id, $property_name, $mark_doubtful);
 }
 function quiz_rules_xtra_unset_review_options($quiz_node_id){
-	//Other functions could work to edit more than one quiz attached to a node.
-	//This function would not because it depends on a quiz's initial values.
-	//This doesn't currently matter, nor will it matter as long as there's one quiz per node.
 	quizReviewOnOff($quiz_node_id, FALSE);
 }
+
