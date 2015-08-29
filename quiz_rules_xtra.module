@@ -325,7 +325,7 @@ function rulesBool2QuizBool(&$string){
 function quizReviewOnOff($quiz_node_id, $onOff){
 	$result = db_query('SELECT review_options FROM {quiz_node_properties} WHERE nid = :nid LIMIT 1', array(':nid' => $quiz_node_id));
 	$result = $result->fetchAssoc();
-	$serialized = $result;
+	$serialized = $result['review_options'];
 	$unserialized = unserialize($serialized);
 	foreach($unserialized as $keyOfPart => $part){
 		foreach($part as $keyOfElement => $element){
