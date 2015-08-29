@@ -267,7 +267,7 @@ function quiz_rules_xtra_rules_action_info() {
 			'quiz_node_id' => $nid_parameter_default,
 			'build_on_last' => array(
 				'type' => 'text',
-				'label' => t('Enumerated field indicating whether a user can build on the last attempt. "" for none, "correct" for correct answers only, "all" for all answers.'),
+				'label' => t('Enumerated field indicating whether a user can build on the last attempt. "none" for none, "correct" for correct answers only, "all" for all answers.'),
 				'default_value' => "",
 			),
 		), 
@@ -452,6 +452,13 @@ function quiz_rules_xtra_allow_change($quiz_node_id, $allow_change){
 	updateQuizProperty($quiz_node_id, $property_name, $allow_change);
 }
 function quiz_rules_xtra_build_on_last($quiz_node_id, $build_on_last){
+	//Accept uppercase values, just in case
+	$build_on_last = strtolower($build_on_last);
+	//rules does not accept empty strings, so "" come in as "none"
+	//change those here from "none" to ""
+	if($build_on_last == "none"){
+		$build_on_last = "";
+	}
 	//Only valid values: "" for none, "correct" for correct answers only, "all" for all answers.
 	//Storing anything else on the database will surely cause unexpected behavior
 	if($build_on_last === "" || $build_on_last === "correct" || $build_on_last === "all"){
