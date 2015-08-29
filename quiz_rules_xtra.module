@@ -314,7 +314,7 @@ function quiz_rules_xtra_rules_action_info() {
 function updateQuizProperty($quiz_node_id, $property_name, $property_value){
 	db_update('quiz_node_properties')
 	->fields(array($property_name => $property_value))
-	->condition('nid', $quiz_node_id, 'IN')
+	->condition('nid', $quiz_node_id, '=')
 	->execute();
 }
 function rulesBool2QuizBool(&$string){
